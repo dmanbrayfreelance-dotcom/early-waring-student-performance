@@ -7,6 +7,10 @@
   "cleanUrls": true,
   "routes": [
     {
+      "src": "/tailwind.css",
+      "dest": "/frontend/tailwind.css"
+    },
+    {
       "src": "/styles.css",
       "dest": "/frontend/styles.css"
     },
