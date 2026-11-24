@@ -19,9 +19,14 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+HAS_MATPLOTLIB = False
+try:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    HAS_MATPLOTLIB = True
+except ImportError:
+    pass
 import numpy as np
 import pandas as pd
 from sklearn.inspection import permutation_importance
