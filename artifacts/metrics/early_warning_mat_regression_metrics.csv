@@ -1,0 +1,7 @@
+model_name,task,MAE,MSE,RMSE,R2,num_test_samples
+XGBoost Regressor,regression,1.6597,5.8512,2.4189,0.6353,79
+Stacking Regressor,regression,1.646,6.1866,2.4873,0.6144,79
+Random Forest Regressor,regression,1.6501,6.5703,2.5633,0.5904,79
+Linear Regression,regression,2.1102,6.8924,2.6253,0.5704,79
+Support Vector Regressor,regression,1.6901,7.0305,2.6515,0.5618,79
+TabNet Regressor,regression,1.9806,7.615,2.7595,0.5253,79

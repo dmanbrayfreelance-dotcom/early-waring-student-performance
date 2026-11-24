@@ -1,0 +1,324 @@
+[
+  {
+    "model_name": "Logistic Regression",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7308,
+    "Macro_Precision": 0.681,
+    "Macro_Recall": 0.698,
+    "Macro_F1": 0.6849,
+    "Weighted_F1": 0.7237,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3472,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.831,
+        "Recall": 0.8939,
+        "F1": 0.8613
+      },
+      "Medium Risk": {
+        "Precision": 0.6286,
+        "Recall": 0.5,
+        "F1": 0.557
+      },
+      "High Risk": {
+        "Precision": 0.5833,
+        "Recall": 0.7,
+        "F1": 0.6364
+      }
+    },
+    "confusion_matrix": [
+      [
+        59,
+        7,
+        0
+      ],
+      [
+        12,
+        22,
+        10
+      ],
+      [
+        0,
+        6,
+        14
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Random Forest Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7538,
+    "Macro_Precision": 0.7364,
+    "Macro_Recall": 0.6985,
+    "Macro_F1": 0.7126,
+    "Weighted_F1": 0.7526,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3242,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8507,
+        "Recall": 0.8636,
+        "F1": 0.8571
+      },
+      "Medium Risk": {
+        "Precision": 0.625,
+        "Recall": 0.6818,
+        "F1": 0.6522
+      },
+      "High Risk": {
+        "Precision": 0.7333,
+        "Recall": 0.55,
+        "F1": 0.6286
+      }
+    },
+    "confusion_matrix": [
+      [
+        57,
+        9,
+        0
+      ],
+      [
+        10,
+        30,
+        4
+      ],
+      [
+        0,
+        9,
+        11
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Support Vector Machine",
+    "task": "multiclass_risk",
+    "Accuracy": 0.6769,
+    "Macro_Precision": 0.615,
+    "Macro_Recall": 0.6187,
+    "Macro_F1": 0.6167,
+    "Weighted_F1": 0.6783,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3161,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8462,
+        "Recall": 0.8333,
+        "F1": 0.8397
+      },
+      "Medium Risk": {
+        "Precision": 0.5227,
+        "Recall": 0.5227,
+        "F1": 0.5227
+      },
+      "High Risk": {
+        "Precision": 0.4762,
+        "Recall": 0.5,
+        "F1": 0.4878
+      }
+    },
+    "confusion_matrix": [
+      [
+        55,
+        11,
+        0
+      ],
+      [
+        10,
+        23,
+        11
+      ],
+      [
+        0,
+        10,
+        10
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "TabNet Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7077,
+    "Macro_Precision": 0.6472,
+    "Macro_Recall": 0.6141,
+    "Macro_F1": 0.6235,
+    "Weighted_F1": 0.7002,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3216,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8406,
+        "Recall": 0.8788,
+        "F1": 0.8593
+      },
+      "Medium Risk": {
+        "Precision": 0.5625,
+        "Recall": 0.6136,
+        "F1": 0.587
+      },
+      "High Risk": {
+        "Precision": 0.5385,
+        "Recall": 0.35,
+        "F1": 0.4242
+      }
+    },
+    "confusion_matrix": [
+      [
+        58,
+        8,
+        0
+      ],
+      [
+        11,
+        27,
+        6
+      ],
+      [
+        0,
+        13,
+        7
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "XGBoost Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7923,
+    "Macro_Precision": 0.7732,
+    "Macro_Recall": 0.747,
+    "Macro_F1": 0.7582,
+    "Weighted_F1": 0.7895,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3121,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8571,
+        "Recall": 0.9091,
+        "F1": 0.8824
+      },
+      "Medium Risk": {
+        "Precision": 0.6977,
+        "Recall": 0.6818,
+        "F1": 0.6897
+      },
+      "High Risk": {
+        "Precision": 0.7647,
+        "Recall": 0.65,
+        "F1": 0.7027
+      }
+    },
+    "confusion_matrix": [
+      [
+        60,
+        6,
+        0
+      ],
+      [
+        10,
+        30,
+        4
+      ],
+      [
+        0,
+        7,
+        13
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "PyTorch Neural Network",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7077,
+    "Macro_Precision": 0.6472,
+    "Macro_Recall": 0.6141,
+    "Macro_F1": 0.6235,
+    "Weighted_F1": 0.7002,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3216,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8406,
+        "Recall": 0.8788,
+        "F1": 0.8593
+      },
+      "Medium Risk": {
+        "Precision": 0.5625,
+        "Recall": 0.6136,
+        "F1": 0.587
+      },
+      "High Risk": {
+        "Precision": 0.5385,
+        "Recall": 0.35,
+        "F1": 0.4242
+      }
+    },
+    "confusion_matrix": [
+      [
+        58,
+        8,
+        0
+      ],
+      [
+        11,
+        27,
+        6
+      ],
+      [
+        0,
+        13,
+        7
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Stacking Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7462,
+    "Macro_Precision": 0.7208,
+    "Macro_Recall": 0.6975,
+    "Macro_F1": 0.7074,
+    "Weighted_F1": 0.7429,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3082,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8286,
+        "Recall": 0.8788,
+        "F1": 0.8529
+      },
+      "Medium Risk": {
+        "Precision": 0.6279,
+        "Recall": 0.6136,
+        "F1": 0.6207
+      },
+      "High Risk": {
+        "Precision": 0.7059,
+        "Recall": 0.6,
+        "F1": 0.6486
+      }
+    },
+    "confusion_matrix": [
+      [
+        58,
+        8,
+        0
+      ],
+      [
+        12,
+        27,
+        5
+      ],
+      [
+        0,
+        8,
+        12
+      ]
+    ],
+    "num_test_samples": 130
+  }
+]

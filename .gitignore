@@ -1,0 +1,22 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# Streamlit
+.streamlit/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Logs
+logs/*.log
+
+# OS metadata
+Thumbs.db
+.DS_Store

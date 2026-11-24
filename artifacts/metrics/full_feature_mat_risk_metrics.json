@@ -1,0 +1,324 @@
+[
+  {
+    "model_name": "Logistic Regression",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7595,
+    "Macro_Precision": 0.7901,
+    "Macro_Recall": 0.7607,
+    "Macro_F1": 0.7652,
+    "Weighted_F1": 0.765,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3176,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8571,
+        "Recall": 0.6667,
+        "F1": 0.75
+      },
+      "Medium Risk": {
+        "Precision": 0.6,
+        "Recall": 0.8077,
+        "F1": 0.6885
+      },
+      "High Risk": {
+        "Precision": 0.913,
+        "Recall": 0.8077,
+        "F1": 0.8571
+      }
+    },
+    "confusion_matrix": [
+      [
+        18,
+        9,
+        0
+      ],
+      [
+        3,
+        21,
+        2
+      ],
+      [
+        0,
+        5,
+        21
+      ]
+    ],
+    "num_test_samples": 79
+  },
+  {
+    "model_name": "Random Forest Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7975,
+    "Macro_Precision": 0.8047,
+    "Macro_Recall": 0.7972,
+    "Macro_F1": 0.7992,
+    "Weighted_F1": 0.8,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.2721,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.9167,
+        "Recall": 0.8148,
+        "F1": 0.8627
+      },
+      "Medium Risk": {
+        "Precision": 0.6897,
+        "Recall": 0.7692,
+        "F1": 0.7273
+      },
+      "High Risk": {
+        "Precision": 0.8077,
+        "Recall": 0.8077,
+        "F1": 0.8077
+      }
+    },
+    "confusion_matrix": [
+      [
+        22,
+        4,
+        1
+      ],
+      [
+        2,
+        20,
+        4
+      ],
+      [
+        0,
+        5,
+        21
+      ]
+    ],
+    "num_test_samples": 79
+  },
+  {
+    "model_name": "Support Vector Machine",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7722,
+    "Macro_Precision": 0.7899,
+    "Macro_Recall": 0.7721,
+    "Macro_F1": 0.7765,
+    "Weighted_F1": 0.7771,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.2931,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.875,
+        "Recall": 0.7778,
+        "F1": 0.8235
+      },
+      "Medium Risk": {
+        "Precision": 0.625,
+        "Recall": 0.7692,
+        "F1": 0.6897
+      },
+      "High Risk": {
+        "Precision": 0.8696,
+        "Recall": 0.7692,
+        "F1": 0.8163
+      }
+    },
+    "confusion_matrix": [
+      [
+        21,
+        6,
+        0
+      ],
+      [
+        3,
+        20,
+        3
+      ],
+      [
+        0,
+        6,
+        20
+      ]
+    ],
+    "num_test_samples": 79
+  },
+  {
+    "model_name": "TabNet Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7215,
+    "Macro_Precision": 0.7208,
+    "Macro_Recall": 0.7208,
+    "Macro_F1": 0.7206,
+    "Weighted_F1": 0.7215,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3028,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8077,
+        "Recall": 0.7778,
+        "F1": 0.7925
+      },
+      "Medium Risk": {
+        "Precision": 0.5769,
+        "Recall": 0.5769,
+        "F1": 0.5769
+      },
+      "High Risk": {
+        "Precision": 0.7778,
+        "Recall": 0.8077,
+        "F1": 0.7925
+      }
+    },
+    "confusion_matrix": [
+      [
+        21,
+        6,
+        0
+      ],
+      [
+        5,
+        15,
+        6
+      ],
+      [
+        0,
+        5,
+        21
+      ]
+    ],
+    "num_test_samples": 79
+  },
+  {
+    "model_name": "XGBoost Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.8861,
+    "Macro_Precision": 0.8981,
+    "Macro_Recall": 0.8865,
+    "Macro_F1": 0.888,
+    "Weighted_F1": 0.8884,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.2733,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 1.0,
+        "Recall": 0.8519,
+        "F1": 0.92
+      },
+      "Medium Risk": {
+        "Precision": 0.7742,
+        "Recall": 0.9231,
+        "F1": 0.8421
+      },
+      "High Risk": {
+        "Precision": 0.92,
+        "Recall": 0.8846,
+        "F1": 0.902
+      }
+    },
+    "confusion_matrix": [
+      [
+        23,
+        4,
+        0
+      ],
+      [
+        0,
+        24,
+        2
+      ],
+      [
+        0,
+        3,
+        23
+      ]
+    ],
+    "num_test_samples": 79
+  },
+  {
+    "model_name": "PyTorch Neural Network",
+    "task": "multiclass_risk",
+    "Accuracy": 0.7215,
+    "Macro_Precision": 0.7208,
+    "Macro_Recall": 0.7208,
+    "Macro_F1": 0.7206,
+    "Weighted_F1": 0.7215,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.3028,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.8077,
+        "Recall": 0.7778,
+        "F1": 0.7925
+      },
+      "Medium Risk": {
+        "Precision": 0.5769,
+        "Recall": 0.5769,
+        "F1": 0.5769
+      },
+      "High Risk": {
+        "Precision": 0.7778,
+        "Recall": 0.8077,
+        "F1": 0.7925
+      }
+    },
+    "confusion_matrix": [
+      [
+        21,
+        6,
+        0
+      ],
+      [
+        5,
+        15,
+        6
+      ],
+      [
+        0,
+        5,
+        21
+      ]
+    ],
+    "num_test_samples": 79
+  },
+  {
+    "model_name": "Stacking Classifier",
+    "task": "multiclass_risk",
+    "Accuracy": 0.8481,
+    "Macro_Precision": 0.864,
+    "Macro_Recall": 0.8485,
+    "Macro_F1": 0.851,
+    "Weighted_F1": 0.8514,
+    "Warning_2_Recall": 0.0,
+    "Multiclass_ROC_AUC": 0.246,
+    "per_class": {
+      "Low Risk": {
+        "Precision": 0.9565,
+        "Recall": 0.8148,
+        "F1": 0.88
+      },
+      "Medium Risk": {
+        "Precision": 0.7188,
+        "Recall": 0.8846,
+        "F1": 0.7931
+      },
+      "High Risk": {
+        "Precision": 0.9167,
+        "Recall": 0.8462,
+        "F1": 0.88
+      }
+    },
+    "confusion_matrix": [
+      [
+        22,
+        5,
+        0
+      ],
+      [
+        1,
+        23,
+        2
+      ],
+      [
+        0,
+        4,
+        22
+      ]
+    ],
+    "num_test_samples": 79
+  }
+]

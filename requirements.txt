@@ -1,0 +1,34 @@
+# ==============================================================================
+# Explainable Student Academic Performance Prediction and At-Risk Early-Warning
+# Compatible with Python 3.10+
+# ==============================================================================
+
+# Core Data Engineering & Science
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+scikit-learn>=1.3.0
+joblib>=1.3.0
+requests>=2.28.0
+
+# Visualization & App
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+streamlit>=1.28.0
+
+# Imbalanced Learning & Testing
+imbalanced-learn>=0.11.0
+pytest>=7.4.0
+
+# Gradient Boosting Ensembles
+xgboost>=2.0.0
+lightgbm>=4.0.0
+catboost>=1.2.0
+
+# Deep Learning & TabNet
+torch>=2.0.0
+pytorch-tabnet>=4.1.0
+
+# Explainable AI
+shap>=0.44.0

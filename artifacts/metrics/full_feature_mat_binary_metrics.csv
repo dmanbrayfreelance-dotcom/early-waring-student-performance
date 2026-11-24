@@ -1,0 +1,8 @@
+model_name,task,Accuracy,Precision,Recall,F1,ROC_AUC,confusion_matrix,num_test_samples
+Stacking Classifier,binary_classification,0.9241,0.9273,0.9623,0.9444,0.9811,"[[22, 4], [2, 51]]",79
+XGBoost Classifier,binary_classification,0.9114,0.9259,0.9434,0.9346,0.9753,"[[22, 4], [3, 50]]",79
+Logistic Regression,binary_classification,0.8987,0.9245,0.9245,0.9245,0.9768,"[[22, 4], [4, 49]]",79
+Random Forest Classifier,binary_classification,0.8861,0.9231,0.9057,0.9143,0.9659,"[[22, 4], [5, 48]]",79
+Support Vector Machine,binary_classification,0.8861,0.9783,0.8491,0.9091,0.9565,"[[25, 1], [8, 45]]",79
+TabNet Classifier,binary_classification,0.6709,0.6709,1.0,0.803,0.516,"[[0, 26], [0, 53]]",79
+PyTorch Neural Network,binary_classification,0.6709,0.6709,1.0,0.803,0.516,"[[0, 26], [0, 53]]",79

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentSignals • Student Risk & Early-Warning System</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            },
+            sidebar: '#0f172a',
+            surface: '#f8fafc',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- ApexCharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-surface text-slate-800 antialiased font-sans flex h-screen overflow-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- LEFT SIDEBAR: DARK NAVY MATCHING STUDENTSIGNALS SCREENSHOT               -->
+  <!-- ========================================================================= -->
+  <aside class="w-64 bg-sidebar flex-shrink-0 flex flex-col justify-between border-r border-slate-800 select-none z-20">
+    <div class="p-5 flex flex-col flex-1 overflow-y-auto">
+      
+      <!-- Brand Logo Header -->
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          S
+        </div>
+        <span class="text-white font-bold text-lg tracking-tight">StudentSignals</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1.5 flex-1" id="sidebar-nav">
+        <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-item active w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-semibold transition">
+          <div class="flex items-center gap-3">
+            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+            <span>Dashboard</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+        </button>
+
+        <button onclick="switchView('upload')" id="nav-upload" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="upload" class="w-4 h-4"></i>
+          <span>Upload Data</span>
+        </button>
+
+        <button onclick="switchView('risk-list')" id="nav-risk-list" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="users" class="w-4 h-4"></i>
+          <span>Student Risk List</span>
+        </button>
+
+        <button onclick="switchView('interventions')" id="nav-interventions" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+          <span>Interventions</span>
+        </button>
+
+        <button onclick="switchView('insights')" id="nav-insights" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+          <div class="flex items-center gap-3">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>AI Insights</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 font-bold border border-blue-800">SHAP</span>
+        </button>
+
+        <button onclick="switchView('benchmarks')" id="nav-benchmarks" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+          <div class="flex items-center gap-3">
+            <i data-lucide="landmark" class="w-4 h-4"></i>
+            <span>School Comparison</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-950 text-purple-400 font-bold border border-purple-800">ML</span>
+        </button>
+
+        <button onclick="switchView('whatif')" id="nav-whatif" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="flask-conical" class="w-4 h-4"></i>
+          <span>What-If Simulator</span>
+        </button>
+      </nav>
+
+      <!-- Bottom Viewing Mode Controls (No Login/Logout) -->
+      <div class="pt-4 border-t border-slate-800">
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Viewing Mode</div>
+        <div class="bg-slate-900 p-1 rounded-lg flex items-center gap-1 mb-2 border border-slate-800">
+          <button onclick="setViewingMode('early_warning')" id="pill-early" class="flex-1 py-1.5 px-2 rounded-md text-xs font-semibold bg-blue-600 text-white transition">
+            🛡️ Early-Warn
+          </button>
+          <button onclick="setViewingMode('full_feature')" id="pill-full" class="flex-1 py-1.5 px-2 rounded-md text-xs font-semibold text-slate-400 hover:text-white transition">
+            📈 Full-Bench
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-slate-400 mt-2 px-1">
+          <span>Cohort Dataset:</span>
+          <select id="dataset-select" onchange="changeDataset(this.value)" class="bg-slate-800 text-slate-200 text-xs rounded px-2 py-1 border border-slate-700 outline-none">
+            <option value="mat">Mathematics</option>
+            <option value="por">Portuguese</option>
+          </select>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2 px-1">UCI Educational Benchmark • Qin et al. (2023)</p>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN CONTENT AREA                                                         -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 flex flex-col overflow-y-auto bg-slate-50">
+    
+    <!-- Top Bar with Mode Banner -->
+    <header class="bg-white border-b border-slate-200 px-8 py-3.5 flex items-center justify-between sticky top-0 z-10 shadow-xs">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+          <i data-lucide="database" class="w-3.5 h-3.5"></i>
+          <span id="current-mode-label">Demo Mode • Early-Warning</span>
+        </span>
+        <span class="text-xs text-slate-500">•</span>
+        <span class="text-xs text-slate-500" id="current-dataset-label">Dataset: Mathematics (395 students across 2 schools)</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openApiConfigModal()" id="btn-api-status" title="Configure Render Backend API URL" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 transition shadow-2xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500" id="api-status-dot"></span>
+          <span id="api-status-text">API: Local (8000)</span>
+          <i data-lucide="settings-2" class="w-3 h-3 text-slate-400"></i>
+        </button>
+
+        <button onclick="switchView('upload')" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50 transition shadow-2xs">
+          <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>Upload Data</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body Container -->
+    <div class="p-8 max-w-7xl w-full mx-auto flex-1">
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 1: DASHBOARD (EXACT STUDENT SIGNALS REPLICA)                     -->
+      <!-- ===================================================================== -->
+      <section id="view-dashboard" class="space-y-6">
+        
+        <!-- Top Notification Banner -->
+        <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-4 flex items-center justify-between text-sm text-blue-900 shadow-2xs">
+          <span>You're viewing sample cohort data. Switch to "Full-Feature" or upload your own to see real-time predictive insights.</span>
+          <button onclick="switchView('upload')" class="px-4 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded-lg text-xs font-semibold transition">
+            Upload Your Data
+          </button>
+        </div>
+
+        <!-- Section Title & Action -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+            <p class="text-sm text-slate-500">Student risk overview & early-warning telemetrics</p>
+          </div>
+          <button onclick="switchView('risk-list')" class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-700 hover:text-blue-600 transition">
+            <span>View All Students</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- 5 KPI Cards (Exact replica of StudentSignals screenshot) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- Total Students -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="users" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs font-medium text-slate-500">Total Students</div>
+              <div class="text-2xl font-bold text-slate-900" id="kpi-total">--</div>
+            </div>
+          </div>
+
+          <!-- High Risk -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-lg bg-red-50 text-red-500 flex items-center justify-center">
+              <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs font-medium text-slate-500">High Risk</div>
+              <div class="text-2xl font-bold text-slate-900" id="kpi-high-risk">--</div>
+            </div>
+          </div>
+
+          <!-- Attendance Warnings -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs font-medium text-slate-500">Attendance Warnings</div>
+              <div class="text-2xl font-bold text-slate-900" id="kpi-attendance">--</div>
+            </div>
+          </div>
+
+          <!-- Grade Warnings -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center">
+              <i data-lucide="trending-down" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs font-medium text-slate-500">Grade Warnings</div>
+              <div class="text-2xl font-bold text-slate-900" id="kpi-grade">--</div>
+            </div>
+          </div>
+
+          <!-- Discipline / Distress Incidents -->
+          <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3.5 shadow-2xs">
+            <div class="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs font-medium text-slate-500">Discipline Incidents</div>
+              <div class="text-2xl font-bold text-slate-900" id="kpi-discipline">--</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intervention Overview Card (Exact Replica) -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-6">
+          <div class="flex items-center gap-2 text-slate-900 font-semibold text-base">
+            <i data-lucide="clipboard-check" class="w-5 h-5 text-blue-600"></i>
+            <span>Intervention Overview</span>
+          </div>
+
+          <!-- 4 Stat Pills -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-50/80 border border-slate-100 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-slate-900" id="int-active">19</div>
+              <div class="text-xs font-medium text-slate-500 mt-1">Active</div>
+            </div>
+            <div class="bg-slate-50/80 border border-slate-100 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-slate-900" id="int-completed">6</div>
+              <div class="text-xs font-medium text-slate-500 mt-1">Completed</div>
+            </div>
+            <div class="bg-slate-50/80 border border-slate-100 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-slate-900" id="int-served">26</div>
+              <div class="text-xs font-medium text-slate-500 mt-1">Students Served</div>
+            </div>
+            <div class="bg-slate-50/80 border border-slate-100 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-slate-900" id="int-total">33</div>
+              <div class="text-xs font-medium text-slate-500 mt-1">Total Interventions</div>
+            </div>
+          </div>
+
+          <!-- Two Side-by-Side Charts -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-700 mb-3">By Type</h3>
+              <div id="chart-by-type" class="h-64"></div>
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold text-slate-700 mb-3">By Tier</h3>
+              <div id="chart-by-tier" class="h-64 flex items-center justify-center"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 2: STUDENT RISK LIST                                             -->
+      <!-- ===================================================================== -->
+      <section id="view-risk-list" class="space-y-6 hidden">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">Student Risk List</h1>
+          <p class="text-sm text-slate-500">Ranked early-warning watchlist with individual diagnostic inspector</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-600">Risk Tier:</span>
+            <button onclick="filterRiskTier('All')" id="btn-tier-all" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition">All</button>
+            <button onclick="filterRiskTier('High Risk')" id="btn-tier-high" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">High Risk</button>
+            <button onclick="filterRiskTier('Medium Risk')" id="btn-tier-med" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Medium Risk</button>
+            <button onclick="filterRiskTier('Low Risk')" id="btn-tier-low" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Low Risk</button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+              <input type="text" id="search-input" onkeyup="handleSearch(this.value)" placeholder="Search student ID..." class="pl-9 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 w-52">
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Table -->
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase font-semibold">
+                <tr>
+                  <th class="px-5 py-3">Student ID</th>
+                  <th class="px-4 py-3">Predicted Risk</th>
+                  <th class="px-4 py-3">Risk Score</th>
+                  <th class="px-4 py-3">Predicted Grade (G3)</th>
+                  <th class="px-4 py-3">Early Grade (G1)</th>
+                  <th class="px-4 py-3">Study Time</th>
+                  <th class="px-4 py-3">Failures</th>
+                  <th class="px-4 py-3">Absences</th>
+                  <th class="px-4 py-3 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="students-table-body" class="divide-y divide-slate-100 font-medium">
+                <!-- Dynamically loaded rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Student Deep Dive Modal / Drawer -->
+        <div id="student-modal" class="bg-white border border-slate-200 rounded-xl p-6 shadow-md space-y-6 hidden">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900" id="modal-student-id">Student Details</h2>
+              <p class="text-xs text-slate-500" id="modal-student-sub">Local SHAP attribution and personalized advising protocol</p>
+            </div>
+            <button onclick="closeStudentModal()" class="text-slate-400 hover:text-slate-600">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <!-- Quick Metrics -->
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="modal-metrics">
+            <!-- Injected dynamically -->
+          </div>
+
+          <!-- Local SHAP + Recommendations -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-800 mb-3">Local Risk Attributions (Drivers vs Protective)</h3>
+              <div id="chart-local-shap" class="h-64"></div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-slate-800 mb-3">Prescriptive Faculty Advising Protocol</h3>
+              <div id="modal-recommendations" class="space-y-3 overflow-y-auto max-h-72 pr-1">
+                <!-- Injected recommendations -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 3: INTERVENTIONS                                                 -->
+      <!-- ===================================================================== -->
+      <section id="view-interventions" class="space-y-6 hidden">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">Interventions Management</h1>
+          <p class="text-sm text-slate-500">Active university advising clinics and recovery assignment workflows</p>
+        </div>
+
+        <!-- 3 Feature Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-2">
+            <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Attendance Recovery Contract</h3>
+            <p class="text-xs text-slate-500">Targeted for students with absences &ge; 10 sessions. Includes mandatory weekly faculty sign-offs.</p>
+            <div class="text-xs font-semibold text-blue-600 pt-1">18 Active Students</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-2">
+            <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Prerequisite Remedial Foundation</h3>
+            <p class="text-xs text-slate-500">Supervised problem-solving workshops and question-bank reviews for past failures.</p>
+            <div class="text-xs font-semibold text-purple-600 pt-1">21 Active Students</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-2">
+            <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="heart" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Campus Wellness & Study Circles</h3>
+            <p class="text-xs text-slate-500">Independent study timetables, peer mentoring circle, and lifestyle counseling.</p>
+            <div class="text-xs font-semibold text-emerald-600 pt-1">14 Active Students</div>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
+          <h3 class="text-sm font-semibold text-slate-800">Active Advising Cases Roster</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold">
+                <tr>
+                  <th class="px-4 py-2.5">Student</th>
+                  <th class="px-4 py-2.5">Risk Tier</th>
+                  <th class="px-4 py-2.5">Priority</th>
+                  <th class="px-4 py-2.5">Protocol Title</th>
+                  <th class="px-4 py-2.5">Action Status</th>
+                </tr>
+              </thead>
+              <tbody id="interventions-table-body" class="divide-y divide-slate-100">
+                <!-- Dynamically generated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 4: AI INSIGHTS (SHAP)                                            -->
+      <!-- ===================================================================== -->
+      <section id="view-insights" class="space-y-6 hidden">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">AI Insights & Explainability</h1>
+          <p class="text-sm text-slate-500">Global SHAP feature sensitivity and IEEE Qin et al. (2023) Subjective vs Objective decomposition</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs">
+            <h3 class="text-sm font-semibold text-slate-800 mb-3">Global Feature Importance Ranking</h3>
+            <div id="chart-global-shap" class="h-80"></div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
+            <h3 class="text-sm font-semibold text-slate-800">Subjective vs Objective Elements (IEEE Qin et al. 2023)</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Student performance is decomposed into two complementary dimensions:
+              <b>Subjective Behavioral Signals</b> (study time, absenteeism, alcohol consumption, past failures) and 
+              <b>Objective Educational Context</b> (parental education, family support, school environment).
+            </p>
+            <div id="chart-pie-elements" class="h-64 flex items-center justify-center"></div>
+          </div>
+        </div>
+
+        <!-- Plain-English Stakeholder Takeaways -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs">
+            <div class="text-xs font-bold text-blue-600 uppercase mb-1">1. Early Grade Decisiveness</div>
+            <p class="text-xs text-slate-600 leading-relaxed">Students with first-period mark <b>G1 &lt; 10</b> carry an 82% empirical probability of end-term failure without prompt academic mentoring.</p>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs">
+            <div class="text-xs font-bold text-amber-600 uppercase mb-1">2. Non-Linear Absence Drag</div>
+            <p class="text-xs text-slate-600 leading-relaxed">Accumulating &ge; 10 absences overrides strong parental education capital and directly shifts students into Medium/High Risk tiers.</p>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs">
+            <div class="text-xs font-bold text-emerald-600 uppercase mb-1">3. Study Investment Buffer</div>
+            <p class="text-xs text-slate-600 leading-relaxed">Committing to &ge; 3 hours/week of structured independent study preserves passing trajectories across demanding STEM courses.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 5: SCHOOL COMPARISON & MODEL BENCHMARK                          -->
+      <!-- ===================================================================== -->
+      <section id="view-benchmarks" class="space-y-6 hidden">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">School Comparison & Model Benchmark</h1>
+          <p class="text-sm text-slate-500">Empirical comparison across 7 model families and Stacking Ensembles on the test split</p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-6">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <button onclick="switchBenchmarkTab('reg')" id="bm-tab-reg" class="text-xs font-bold text-blue-600 border-b-2 border-blue-600 pb-2">Score Regression (Task A)</button>
+            <button onclick="switchBenchmarkTab('bin')" id="bm-tab-bin" class="text-xs font-semibold text-slate-500 hover:text-slate-800 pb-2">Pass/Fail Classification (Task B)</button>
+            <button onclick="switchBenchmarkTab('risk')" id="bm-tab-risk" class="text-xs font-semibold text-slate-500 hover:text-slate-800 pb-2">Multi-Tier Academic Risk (Task C)</button>
+          </div>
+
+          <div id="benchmark-content" class="overflow-x-auto">
+            <!-- Injected table and chart -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 6: WHAT-IF SIMULATOR                                             -->
+      <!-- ===================================================================== -->
+      <section id="view-whatif" class="space-y-6 hidden">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">Interactive "What-If" Intervention Simulator</h1>
+          <p class="text-sm text-slate-500">Forecast grade gains and risk reduction from custom advising plans in real-time</p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-6">
+          
+          <!-- Mode Switcher: Existing Student vs Manual Custom Entry -->
+          <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider mr-2">Input Mode:</span>
+              <button onclick="setWhatIfMode('select')" id="btn-whatif-mode-select" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition flex items-center gap-1.5">
+                <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                <span>Select Existing Student</span>
+              </button>
+              <button onclick="setWhatIfMode('manual')" id="btn-whatif-mode-manual" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1.5">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                <span>Manual Custom Entry</span>
+              </button>
+            </div>
+            <span class="text-[11px] text-slate-400 font-medium">Test hypothetical academic remediation plans</span>
+          </div>
+
+          <!-- OPTION A: Existing Student Dropdown -->
+          <div id="whatif-select-panel" class="space-y-3">
+            <div class="flex items-center gap-4">
+              <label class="text-xs font-semibold text-slate-700">Select Student to Simulate:</label>
+              <select id="whatif-student-select" onchange="loadStudentIntoSimulator(this.value)" class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 outline-none font-medium">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            <div id="whatif-student-info" class="text-xs text-slate-500 bg-slate-50 border border-slate-100 rounded-lg p-2.5 flex items-center gap-4">
+              <!-- Dynamically populated student profile info -->
+            </div>
+          </div>
+
+          <!-- OPTION B: Manual Student Entry Form -->
+          <div id="whatif-manual-panel" class="space-y-4 hidden bg-slate-50/70 border border-slate-200 rounded-xl p-5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
+                <span>Custom Student Baseline Profile</span>
+              </h3>
+              <span class="text-[11px] text-slate-500">Define current student attributes to test interventions</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Baseline Grade G1 -->
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-700 block">Baseline Exam Grade (G1, 0–20):</label>
+                <input type="number" id="manual-g1" min="0" max="20" step="0.5" value="8.0" oninput="syncManualStudentBaseline()" class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none focus:border-blue-500">
+                <p class="text-[11px] text-slate-500">Standard pass mark is 10/20. Scores under 10 indicate high academic risk.</p>
+              </div>
+
+              <!-- Baseline Absences -->
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-700 block">Baseline Absences (Sessions Missed):</label>
+                <input type="number" id="manual-abs" min="0" max="50" value="12" oninput="syncManualStudentBaseline()" class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none focus:border-blue-500">
+                <p class="text-[11px] text-slate-500">Double-digit absences (&ge; 10) trigger severe non-linear grade penalties.</p>
+              </div>
+
+              <!-- Baseline Weekly Study Time -->
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-700 block">Current Weekly Study Time:</label>
+                <select id="manual-study" onchange="syncManualStudentBaseline()" class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none font-medium">
+                  <option value="1">Level 1: &lt; 2 hours / week (High Risk)</option>
+                  <option value="2" selected>Level 2: 2–5 hours / week (Moderate)</option>
+                  <option value="3">Level 3: 5–10 hours / week (Recommended)</option>
+                  <option value="4">Level 4: &gt; 10 hours / week (Intensive)</option>
+                </select>
+                <p class="text-[11px] text-slate-500">Independent study hours outside structured lecture periods.</p>
+              </div>
+
+              <!-- Baseline Failures -->
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-700 block">Prior Course Failures / Backlogs:</label>
+                <select id="manual-failures" onchange="syncManualStudentBaseline()" class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none font-medium">
+                  <option value="0">0 (Clean academic standing)</option>
+                  <option value="1" selected>1 previous subject failure</option>
+                  <option value="2">2 previous subject failures</option>
+                  <option value="3">3+ previous subject failures</option>
+                </select>
+                <p class="text-[11px] text-slate-500">Unresolved past course deficits degrade subsequent semester courses.</p>
+              </div>
+
+              <!-- Baseline Tutoring -->
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-700 block">Current Tutoring Support:</label>
+                <select id="manual-support" onchange="syncManualStudentBaseline()" class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none font-medium">
+                  <option value="no" selected>No extra tutoring</option>
+                  <option value="yes">Currently enrolled in tutoring</option>
+                </select>
+                <p class="text-[11px] text-slate-500">Institutional remedial classes and guided faculty office hours.</p>
+              </div>
+
+              <!-- Baseline Lifestyle / Alcohol -->
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-700 block">Workday & Weekend Alcohol (Dalc/Walc):</label>
+                <select id="manual-alcohol" onchange="syncManualStudentBaseline()" class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none font-medium">
+                  <option value="1" selected>1 - Very Low / Negligible</option>
+                  <option value="2">2 - Low</option>
+                  <option value="3">3 - Moderate</option>
+                  <option value="4">4 - High</option>
+                </select>
+                <p class="text-[11px] text-slate-500">Lifestyle factors impacting cognitive focus and exam retention.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Divider & Target Guidance Suggestion Box -->
+          <div class="bg-blue-50/60 border border-blue-200 rounded-lg p-3.5 flex items-start gap-3">
+            <i data-lucide="lightbulb" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+            <div class="text-xs text-blue-900 space-y-1">
+              <span class="font-bold">Faculty Goal Advisory & Suggestions:</span>
+              <p class="text-blue-800 leading-relaxed">
+                Adjust the intervention sliders below to simulate targeted remediation. 
+                <b>Aim for:</b> Study Time &ge; 5–10 hrs (Level 3), Absences &le; 4 sessions, and Clearing prior backlogs with Tutoring 
+                to shift high-risk students into passing trajectories.
+              </p>
+            </div>
+          </div>
+
+          <!-- Interactive Intervention Sliders (The What-If Plan) -->
+          <div class="pt-1">
+            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+              <i data-lucide="play-circle" class="w-4 h-4 text-emerald-600"></i>
+              <span>Proposed Intervention Plan (Adjust Sliders to Forecast Outcomes)</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span>Proposed Study Time Target:</span>
+                    <span id="val-study">2 (2–5 hrs)</span>
+                  </div>
+                  <input type="range" id="sim-study" min="1" max="4" value="2" oninput="updateSimValue('val-study', this.value)" class="w-full">
+                  <p class="text-[10px] text-slate-400 mt-0.5">💡 Level 3 (5–10h) raises projected grade by +1.5 to +2.5 pts.</p>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span>Proposed Absence Ceiling:</span>
+                    <span id="val-abs">4 sessions</span>
+                  </div>
+                  <input type="range" id="sim-abs" min="0" max="30" value="4" oninput="updateSimValue('val-abs', this.value)" class="w-full">
+                  <p class="text-[10px] text-slate-400 mt-0.5">💡 Keeping absences below 5 sessions removes high-risk triggers.</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span>Prerequisite Failures Cleared:</span>
+                    <span id="val-failures">0</span>
+                  </div>
+                  <input type="range" id="sim-failures" min="0" max="3" value="0" oninput="updateSimValue('val-failures', this.value)" class="w-full">
+                  <p class="text-[10px] text-slate-400 mt-0.5">💡 Clearing backlogs removes cognitive deficit penalty.</p>
+                </div>
+
+                <div>
+                  <label class="text-xs font-semibold text-slate-700 block mb-1">Enroll in Guided Tutoring Support:</label>
+                  <div class="flex items-center gap-4 mt-2">
+                    <label class="text-xs flex items-center gap-1.5 cursor-pointer">
+                      <input type="radio" name="sim-support" value="no" checked> No Tutoring
+                    </label>
+                    <label class="text-xs flex items-center gap-1.5 cursor-pointer font-semibold text-blue-600">
+                      <input type="radio" name="sim-support" value="yes"> Yes (+ Faculty Tutoring)
+                    </label>
+                  </div>
+                  <p class="text-[10px] text-slate-400 mt-1">💡 Supervised problem workshops reinforce conceptual foundations.</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span>Workday Alcohol Moderation (Dalc):</span>
+                    <span id="val-dalc">1 (Very Low)</span>
+                  </div>
+                  <input type="range" id="sim-dalc" min="1" max="5" value="1" oninput="updateSimValue('val-dalc', this.value)" class="w-full">
+                  <p class="text-[10px] text-slate-400 mt-0.5">💡 Workday sobriety preserves weekday study focus.</p>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span>Weekend Alcohol Moderation (Walc):</span>
+                    <span id="val-walc">1 (Very Low)</span>
+                  </div>
+                  <input type="range" id="sim-walc" min="1" max="5" value="1" oninput="updateSimValue('val-walc', this.value)" class="w-full">
+                  <p class="text-[10px] text-slate-400 mt-0.5">💡 Healthy weekend sleep schedules preserve lecture retention.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2 flex items-center gap-4">
+            <button onclick="runSimulation()" id="btn-run-sim" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-2">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Calculate Projected Trajectory & Advice</span>
+            </button>
+            <span class="text-xs text-slate-400" id="sim-loading-text"></span>
+          </div>
+
+          <!-- Simulation Results -->
+          <div id="sim-results" class="border-t border-slate-100 pt-6 space-y-6 hidden">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="award" class="w-4 h-4 text-blue-600"></i>
+                <span>Simulated Trajectory Outcomes</span>
+              </h3>
+              <span class="text-xs font-semibold text-slate-500" id="sim-student-badge"></span>
+            </div>
+
+            <!-- KPI Results Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <div class="text-xs text-slate-500 font-medium">Predicted Final Grade (G3)</div>
+                <div class="text-2xl font-bold text-slate-900 mt-1" id="sim-score">--</div>
+                <div class="text-xs font-semibold text-emerald-600 mt-1" id="sim-delta">--</div>
+              </div>
+
+              <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <div class="text-xs text-slate-500 font-medium">Risk Tier Shift</div>
+                <div class="text-lg font-bold text-slate-900 mt-2" id="sim-tier-shift">--</div>
+              </div>
+
+              <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 flex items-center" id="sim-status-box">
+                <!-- Status outcome -->
+              </div>
+            </div>
+
+            <!-- Probability Distribution Chart -->
+            <div class="bg-slate-50/70 border border-slate-200 rounded-xl p-4">
+              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Multi-Tier Academic Risk Probability Shift</h4>
+              <div id="chart-sim-prob" class="h-60"></div>
+            </div>
+
+            <!-- Dynamic Actionable Faculty Suggestions & Advice -->
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i>
+                <h4 class="text-sm font-bold text-slate-900">Personalized Faculty Advising Suggestions</h4>
+              </div>
+              <p class="text-xs text-slate-500">Actionable advising protocols tailored specifically to this student's projected outcomes:</p>
+              
+              <div id="whatif-suggestions-list" class="space-y-2.5 pt-1">
+                <!-- Dynamically generated suggestion pills -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 7: UPLOAD DATA                                                   -->
+      <!-- ===================================================================== -->
+      <section id="view-upload" class="space-y-6 hidden">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900">Upload Student Data</h1>
+          <p class="text-sm text-slate-500">Upload custom CSV files to generate instant batch predictions and risk scores</p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-8 shadow-2xs text-center space-y-4">
+          <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
+            <i data-lucide="upload-cloud" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-800">Drag & drop your CSV file here</h3>
+            <p class="text-xs text-slate-500 mt-1">Supports UCI student-mat.csv format (33 columns) or standard student records</p>
+          </div>
+          <input type="file" id="csv-file-input" accept=".csv" class="hidden" onchange="handleFileUpload(event)">
+          <button id="btn-browse-file" onclick="document.getElementById('csv-file-input').click()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs">
+            Browse File
+          </button>
+          <div id="upload-status" class="text-xs font-semibold hidden"></div>
+        </div>
+
+        <div id="upload-results" class="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4 hidden">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-800" id="upload-summary">Scored Cohort Records</h3>
+            <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+              ✓ Batch Ingestion & Scoring Complete
+            </span>
+          </div>
+          <div class="overflow-x-auto max-h-96">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold">
+                <tr>
+                  <th class="px-4 py-2.5">Student ID</th>
+                  <th class="px-4 py-2.5">Predicted Final Grade</th>
+                  <th class="px-4 py-2.5">Risk Tier</th>
+                  <th class="px-4 py-2.5">Study Time</th>
+                  <th class="px-4 py-2.5">Absences</th>
+                  <th class="px-4 py-2.5">Prior Failures</th>
+                </tr>
+              </thead>
+              <tbody id="upload-table-body" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- App Javascript Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

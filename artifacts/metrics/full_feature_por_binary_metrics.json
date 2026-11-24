@@ -1,0 +1,142 @@
+[
+  {
+    "model_name": "Logistic Regression",
+    "task": "binary_classification",
+    "Accuracy": 0.8538,
+    "Precision": 0.9691,
+    "Recall": 0.8545,
+    "F1": 0.9082,
+    "ROC_AUC": 0.9336,
+    "confusion_matrix": [
+      [
+        17,
+        3
+      ],
+      [
+        16,
+        94
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Random Forest Classifier",
+    "task": "binary_classification",
+    "Accuracy": 0.9308,
+    "Precision": 0.972,
+    "Recall": 0.9455,
+    "F1": 0.9585,
+    "ROC_AUC": 0.9666,
+    "confusion_matrix": [
+      [
+        17,
+        3
+      ],
+      [
+        6,
+        104
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Support Vector Machine",
+    "task": "binary_classification",
+    "Accuracy": 0.8692,
+    "Precision": 0.9604,
+    "Recall": 0.8818,
+    "F1": 0.9194,
+    "ROC_AUC": 0.9355,
+    "confusion_matrix": [
+      [
+        16,
+        4
+      ],
+      [
+        13,
+        97
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "TabNet Classifier",
+    "task": "binary_classification",
+    "Accuracy": 0.8231,
+    "Precision": 0.8425,
+    "Recall": 0.9727,
+    "F1": 0.903,
+    "ROC_AUC": 0.4291,
+    "confusion_matrix": [
+      [
+        0,
+        20
+      ],
+      [
+        3,
+        107
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "XGBoost Classifier",
+    "task": "binary_classification",
+    "Accuracy": 0.9385,
+    "Precision": 0.9554,
+    "Recall": 0.9727,
+    "F1": 0.964,
+    "ROC_AUC": 0.9655,
+    "confusion_matrix": [
+      [
+        15,
+        5
+      ],
+      [
+        3,
+        107
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "PyTorch Neural Network",
+    "task": "binary_classification",
+    "Accuracy": 0.8231,
+    "Precision": 0.8425,
+    "Recall": 0.9727,
+    "F1": 0.903,
+    "ROC_AUC": 0.4291,
+    "confusion_matrix": [
+      [
+        0,
+        20
+      ],
+      [
+        3,
+        107
+      ]
+    ],
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Stacking Classifier",
+    "task": "binary_classification",
+    "Accuracy": 0.9231,
+    "Precision": 0.9464,
+    "Recall": 0.9636,
+    "F1": 0.955,
+    "ROC_AUC": 0.9655,
+    "confusion_matrix": [
+      [
+        14,
+        6
+      ],
+      [
+        4,
+        106
+      ]
+    ],
+    "num_test_samples": 130
+  }
+]

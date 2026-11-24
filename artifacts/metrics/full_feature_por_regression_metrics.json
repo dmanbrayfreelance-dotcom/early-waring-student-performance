@@ -1,0 +1,56 @@
+[
+  {
+    "model_name": "Linear Regression",
+    "task": "regression",
+    "MAE": 0.9688,
+    "MSE": 2.9697,
+    "RMSE": 1.7233,
+    "R2": 0.7777,
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Random Forest Regressor",
+    "task": "regression",
+    "MAE": 0.9481,
+    "MSE": 2.7816,
+    "RMSE": 1.6678,
+    "R2": 0.7918,
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Support Vector Regressor",
+    "task": "regression",
+    "MAE": 1.1918,
+    "MSE": 4.5051,
+    "RMSE": 2.1225,
+    "R2": 0.6628,
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "TabNet Regressor",
+    "task": "regression",
+    "MAE": 1.1532,
+    "MSE": 3.7158,
+    "RMSE": 1.9276,
+    "R2": 0.7219,
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "XGBoost Regressor",
+    "task": "regression",
+    "MAE": 0.9713,
+    "MSE": 3.1413,
+    "RMSE": 1.7724,
+    "R2": 0.7649,
+    "num_test_samples": 130
+  },
+  {
+    "model_name": "Stacking Regressor",
+    "task": "regression",
+    "MAE": 0.9298,
+    "MSE": 2.8266,
+    "RMSE": 1.6813,
+    "R2": 0.7884,
+    "num_test_samples": 130
+  }
+]
