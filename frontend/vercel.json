@@ -5,22 +5,10 @@
   "installCommand": null,
   "outputDirectory": ".",
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/tailwind.css",
-      "dest": "/tailwind.css"
-    },
-    {
-      "src": "/styles.css",
-      "dest": "/styles.css"
-    },
-    {
-      "src": "/app.js",
-      "dest": "/app.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!tailwind\\.css|styles\\.css|app\\.js).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [

@@ -5,22 +5,10 @@
   "installCommand": null,
   "outputDirectory": "frontend",
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/tailwind.css",
-      "dest": "/frontend/tailwind.css"
-    },
-    {
-      "src": "/styles.css",
-      "dest": "/frontend/styles.css"
-    },
-    {
-      "src": "/app.js",
-      "dest": "/frontend/app.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/index.html"
+      "source": "/((?!tailwind\\.css|styles\\.css|app\\.js).*)",
+      "destination": "/index.html"
     }
   ]
 }
