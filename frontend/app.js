@@ -992,7 +992,6 @@ async function runSimulation() {
     if (btn) btn.disabled = false;
   }
 }
-}
 
 function renderSimProbChart(baseProbs, simProbs) {
   const chartEl = document.querySelector("#chart-sim-prob");
