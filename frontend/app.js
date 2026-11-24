@@ -5,7 +5,16 @@
  */
 
 // Dynamic API Base URL resolution (supports Localhost, Render, and Vercel)
-let API_BASE = localStorage.getItem("STUDENTSIGNALS_API_BASE") || window.__API_URL__ || "";
+const DEFAULT_RENDER_API = "https://early-waring-student-performance.onrender.com";
+const isLocalHost =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.protocol === "file:";
+
+let API_BASE =
+  localStorage.getItem("STUDENTSIGNALS_API_BASE") ||
+  window.__API_URL__ ||
+  (isLocalHost ? "" : DEFAULT_RENDER_API);
 
 let currentMode = "early_warning";
 let currentDataset = "mat";
@@ -58,11 +67,11 @@ function updateApiStatusBadge() {
 }
 
 function openApiConfigModal() {
-  const current = localStorage.getItem("STUDENTSIGNALS_API_BASE") || "";
+  const current = localStorage.getItem("STUDENTSIGNALS_API_BASE") || DEFAULT_RENDER_API;
   const input = prompt(
     "Configure Backend API URL for Render & Vercel deployment:\n\n" +
-    "• If deployed to Render, paste your service URL (e.g., https://studentsignals-api.onrender.com)\n" +
-    "• Leave empty to use local server (http://localhost:8000)",
+    `• Default Render Backend: ${DEFAULT_RENDER_API}\n` +
+    "• Leave empty to reset to default",
     current
   );
 
@@ -73,7 +82,7 @@ function openApiConfigModal() {
       API_BASE = cleanUrl;
     } else {
       localStorage.removeItem("STUDENTSIGNALS_API_BASE");
-      API_BASE = "";
+      API_BASE = isLocalHost ? "" : DEFAULT_RENDER_API;
     }
     updateApiStatusBadge();
     loadOverview();
