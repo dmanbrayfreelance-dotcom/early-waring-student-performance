@@ -28,6 +28,8 @@ import pandas as pd
 from sklearn.ensemble import (
     GradientBoostingClassifier,
     GradientBoostingRegressor,
+    HistGradientBoostingClassifier,
+    HistGradientBoostingRegressor,
     RandomForestClassifier,
     RandomForestRegressor,
     StackingClassifier,
@@ -478,18 +480,28 @@ def get_regression_models(random_state: int = RANDOM_SEED) -> Dict[str, Any]:
         models["LightGBM Regressor"] = lgb.LGBMRegressor(
             n_estimators=100, max_depth=6, random_state=random_state, verbose=-1, n_jobs=-1
         )
+    else:
+        models["LightGBM Regressor"] = HistGradientBoostingRegressor(
+            max_iter=100, max_depth=6, learning_rate=0.08, random_state=random_state
+        )
 
     if HAS_CATBOOST:
         models["CatBoost Regressor"] = cb.CatBoostRegressor(
             iterations=100, depth=6, random_seed=random_state, verbose=False
         )
+    else:
+        models["CatBoost Regressor"] = HistGradientBoostingRegressor(
+            max_iter=100, max_depth=6, learning_rate=0.06, l2_regularization=1.0, random_state=random_state
+        )
 
-    # Base estimators for Stacking Regressor
+    # Base estimators for Stacking Regressor (integrating all distinct model families)
     stack_base = [
         ("lr", models["Linear Regression"]),
         ("rf", models["Random Forest Regressor"]),
         ("svr", models["Support Vector Regressor"]),
-        ("gbr", models["XGBoost Regressor"]),
+        ("xgb", models["XGBoost Regressor"]),
+        ("lgb", models["LightGBM Regressor"]),
+        ("cb", models["CatBoost Regressor"]),
     ]
     models["Stacking Regressor"] = StackingRegressor(
         estimators=stack_base,
@@ -534,10 +546,18 @@ def get_binary_classification_models(
         models["LightGBM Classifier"] = lgb.LGBMClassifier(
             n_estimators=100, max_depth=6, class_weight=class_weight, random_state=random_state, verbose=-1, n_jobs=-1
         )
+    else:
+        models["LightGBM Classifier"] = HistGradientBoostingClassifier(
+            max_iter=100, max_depth=6, class_weight=class_weight, random_state=random_state
+        )
 
     if HAS_CATBOOST:
         models["CatBoost Classifier"] = cb.CatBoostClassifier(
             iterations=100, depth=6, random_seed=random_state, verbose=False
+        )
+    else:
+        models["CatBoost Classifier"] = HistGradientBoostingClassifier(
+            max_iter=100, max_depth=6, l2_regularization=1.0, class_weight=class_weight, random_state=random_state
         )
 
     # PyTorch Neural Network
@@ -545,12 +565,14 @@ def get_binary_classification_models(
         task="binary", epochs=30, random_state=random_state
     )
 
-    # Stacking Classifier
+    # Stacking Classifier (integrating all distinct model families)
     stack_base = [
         ("lr", models["Logistic Regression"]),
         ("rf", models["Random Forest Classifier"]),
         ("svm", models["Support Vector Machine"]),
         ("xgb", models["XGBoost Classifier"]),
+        ("lgb", models["LightGBM Classifier"]),
+        ("cb", models["CatBoost Classifier"]),
     ]
     models["Stacking Classifier"] = StackingClassifier(
         estimators=stack_base,
@@ -598,10 +620,18 @@ def get_multiclass_risk_models(
         models["LightGBM Classifier"] = lgb.LGBMClassifier(
             n_estimators=100, max_depth=6, class_weight=class_weight, random_state=random_state, verbose=-1, n_jobs=-1
         )
+    else:
+        models["LightGBM Classifier"] = HistGradientBoostingClassifier(
+            max_iter=100, max_depth=6, class_weight=class_weight, random_state=random_state
+        )
 
     if HAS_CATBOOST:
         models["CatBoost Classifier"] = cb.CatBoostClassifier(
             iterations=100, depth=6, random_seed=random_state, verbose=False
+        )
+    else:
+        models["CatBoost Classifier"] = HistGradientBoostingClassifier(
+            max_iter=100, max_depth=6, l2_regularization=1.0, class_weight=class_weight, random_state=random_state
         )
 
     # PyTorch SAL-EC Dual Branch Network with Focal Loss
@@ -614,12 +644,14 @@ def get_multiclass_risk_models(
         random_state=random_state,
     )
 
-    # Stacking Classifier
+    # Stacking Classifier (integrating all distinct model families)
     stack_base = [
         ("lr", models["Logistic Regression"]),
         ("rf", models["Random Forest Classifier"]),
         ("svm", models["Support Vector Machine"]),
         ("xgb", models["XGBoost Classifier"]),
+        ("lgb", models["LightGBM Classifier"]),
+        ("cb", models["CatBoost Classifier"]),
     ]
     models["Stacking Classifier"] = StackingClassifier(
         estimators=stack_base,
